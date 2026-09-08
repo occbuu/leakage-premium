@@ -1,23 +1,33 @@
 cff-version: 1.2.0
-message: If you use this software, please cite the article in preferred-citation.
+message: If you use this software, please cite it as below.
 type: software
-title: leakcheck
+title: "leakcheck: screening reported classification results for the resampling-before-splitting artefact"
 version: 1.0.0
 license: BSD-3-Clause
 date-released: "2026-08-31"
-doi: 10.5281/zenodo.22196384
-url: "https://github.com/occbuu/leakage-premium"
-repository-code: "https://github.com/occbuu/leakage-premium"
+doi: 10.5281/zenodo.22196497
+url: "https://github.com/occbuu/leakcheck"
+repository-code: "https://github.com/occbuu/leakcheck"
 abstract: >-
-  Screen a reported classification result for the signature of resampling
-  applied before the train/test split.
+  leakcheck estimates whether a published classification result resembles
+  the statistical pattern produced, in a controlled corpus, by applying a
+  synthetic over-sampler before splitting a dataset into training and test
+  partitions rather than to the training partition alone. It takes only
+  quantities that papers commonly report — the headline minority-class F1,
+  the imbalance ratio, the number of minority cases, the number of features
+  and the model family — and returns a model-estimated screening probability
+  together with a short written explanation. The screening model is a
+  gradient-boosted classifier trained on 22,400 labelled results from 41
+  public datasets; leave-one-dataset-out validation gives an AUC of 0.795
+  and a Brier score of 0.197. The output is a triage signal rather than a
+  causal finding of leakage.
 keywords:
   - data leakage
   - class imbalance
   - SMOTE
-  - resampling
-  - reproducibility
   - peer review
+  - research software
+  - reproducibility
 authors:
   - family-names: Le Ngoc
     given-names: Hieu
@@ -25,14 +35,13 @@ authors:
     email: lnhieu@ptit.edu.vn
     affiliation: >-
       Faculty of Information Technology 2, Posts and Telecommunications
-      Institute of Technology (PTIT), Ho Chi Minh City, Vietnam
-  - family-names: Truong Dinh Hai
-    given-names: Thuy
-    orcid: "https://orcid.org/0009-0006-2946-7490"
-    email: tdh.thuy@ufm.edu.vn
+      Institute of Technology
+  - family-names: Huynh Ngoc Thanh
+    given-names: Trung
+    orcid: "https://orcid.org/0009-0001-5785-6630"
+    email: hnttrung@ufm.edu.vn
     affiliation: >-
-      Faculty of Data Science, University of Finance – Marketing (UFM),
-      Ho Chi Minh City, Vietnam
+      Faculty of Data Science, University of Finance – Marketing
 contact:
   - family-names: Le Ngoc
     given-names: Hieu
@@ -40,16 +49,16 @@ contact:
     email: lnhieu@ptit.edu.vn
     affiliation: >-
       Faculty of Information Technology 2, Posts and Telecommunications
-      Institute of Technology (PTIT), 700000, Vietnam
+      Institute of Technology
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.22196384
-    description: Archived code and supporting materials on Zenodo
+    value: 10.5281/zenodo.22196497
+    description: Archived source, tests, documentation and screening model
 preferred-citation:
   type: article
   title: >-
-    Leakage makes every problem look equally easy: A multi-dataset
-    measurement of the resampling-before-splitting artefact
+    leakcheck: screening reported classification results for the
+    resampling-before-splitting artefact
   year: 2026
   authors:
     - family-names: Le Ngoc
@@ -58,26 +67,22 @@ preferred-citation:
       email: lnhieu@ptit.edu.vn
       affiliation: >-
         Faculty of Information Technology 2, Posts and Telecommunications
-        Institute of Technology (PTIT), Ho Chi Minh City, Vietnam
-    - family-names: Truong Dinh Hai
-      given-names: Thuy
-      orcid: "https://orcid.org/0009-0006-2946-7490"
-      email: tdh.thuy@ufm.edu.vn
+        Institute of Technology
+    - family-names: Huynh Ngoc Thanh
+      given-names: Trung
+      orcid: "https://orcid.org/0009-0001-5785-6630"
+      email: hnttrung@ufm.edu.vn
       affiliation: >-
-        Faculty of Data Science, University of Finance – Marketing (UFM),
-        Ho Chi Minh City, Vietnam
-  url: "https://github.com/occbuu/leakage-premium"
-  identifiers:
-    - type: doi
-      value: 10.5281/zenodo.22196384
-      description: Archived code and supporting materials on Zenodo
+        Faculty of Data Science, University of Finance – Marketing
+  url: "https://github.com/occbuu/leakcheck"
+  doi: 10.5281/zenodo.22196497
   notes: >-
-    All datasets used are public. The corpus builder, the experiment, the
-    analysis and the manuscript build script are released together, along
-    with the complete record of every model fit reported here and the
-    machine-readable summary. This research is funded by University of
-    Finance – Marketing, HCMC Vietnam, and is supported by Posts and
-    Telecommunications Institute of Technology (PTIT), Vietnam. The authors
-    declare that they have no known competing financial interests or
-    personal relationships that could have appeared to influence the work
-    reported in this paper.
+    Original Software Publication. Source, tests, documentation and the
+    exported screening model are released under the BSD 3-Clause licence.
+    The repository and archival record are occbuu/leakcheck, archived on
+    Zenodo at DOI 10.5281/zenodo.22196497. This research is funded by
+    University of Finance – Marketing, HCMC Vietnam, and is supported by
+    Posts and Telecommunications Institute of Technology (PTIT), Vietnam.
+    The authors declare that they have no known competing financial
+    interests or personal relationships that could have appeared to
+    influence the work reported in this paper.

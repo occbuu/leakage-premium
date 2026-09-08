@@ -2,7 +2,7 @@
 
 First release of **leakcheck**: a Python package that screens a reported classification result for the signature of synthetic over-sampling applied *before* the train/test split.
 
-This is the version intended for archival (Zenodo DOI) and for software-paper review.
+This is the version archived on Zenodo ([10.5281/zenodo.22196497](https://doi.org/10.5281/zenodo.22196497)) and intended for SoftwareX review. Source: <https://github.com/occbuu/leakcheck>.
 
 ## Install
 
@@ -32,7 +32,7 @@ leakcheck --f1 0.92 --ir 5.2 --n-minority 237 --n-features 44 --clf RandomForest
 
 ## What's in this version
 
-- Screening model fitted on 22,400 labelled leaked/honest pairs from 41 datasets, validated leave-one-dataset-out (**AUC 0.795**).
+- Screening model fitted on 22,400 labelled leaked/honest pairs from 41 datasets, validated leave-one-dataset-out (**AUC 0.795**, Brier score **0.197**).
 - CLI (`leakcheck`), batch screening (`check_many`), and `selftest()` fixtures that match scikit-learn to 1e-9.
 - `paper.md` / `paper.bib` for the software paper.
 - `Code/04_export_model.py` to refit and rewrite `src/leakcheck/model.json` from `results/raw_results.csv`.
@@ -52,6 +52,6 @@ A high probability is a prompt to ask where the resampler sits relative to the s
 
 Python ≥ 3.9; `numpy>=1.21`. Optional: `pandas` (`pip install 'leakcheck[table]'`).
 
-## License
+## Licence
 
-BSD 3-Clause.
+BSD 3-Clause. See `LICENSE.txt` (also `LICENCE.txt`).

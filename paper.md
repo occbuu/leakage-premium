@@ -7,65 +7,76 @@ tags:
   - SMOTE
   - reproducibility
   - peer review
+  - research software
 authors:
-  - name: Author names withheld for review
+  - name: Hieu Le Ngoc
+    orcid: 0000-0002-1133-1433
+    email: lnhieu@ptit.edu.vn
     affiliation: 1
+    corresponding: true
+  - name: Trung Huynh Ngoc Thanh
+    orcid: 0009-0001-5785-6630
+    email: hnttrung@ufm.edu.vn
+    affiliation: 2
 affiliations:
-  - name: Affiliation withheld for review
+  - name: Faculty of Information Technology 2, Posts and Telecommunications Institute of Technology
     index: 1
+  - name: Faculty of Data Science, University of Finance – Marketing
+    index: 2
 date: 2026
 bibliography: paper.bib
 ---
 
 # Summary
 
-`leakcheck` estimates the probability that a published classification result was
-produced by applying a synthetic over-sampler to a dataset *before* splitting it
-into training and test partitions, rather than to the training partition alone.
-It takes only quantities that papers already report -- the headline
-minority-class F1, the imbalance ratio, the number of minority cases, the number
-of features and the model family -- and returns a calibrated probability with a
-short written explanation. It runs from Python or from the command line, on one
-result or on a table of them.
+`leakcheck` estimates whether a published classification result resembles the
+statistical pattern produced, in a controlled corpus, by applying a synthetic
+over-sampler to a dataset *before* splitting it into training and test
+partitions rather than to the training partition alone. It takes only
+quantities that papers commonly report -- the headline minority-class F1, the
+imbalance ratio, the number of minority cases, the number of features and the
+model family -- and returns a model-estimated screening probability together
+with a short written explanation.
 
-The screen is a gradient-boosted classifier trained on 22,400 labelled
-results from a controlled study of 41 public datasets, in which the
-same model was fitted both ways on the same data so that the correct label is
-known by construction. It is validated leave-one-dataset-out, giving an AUC of
-0.795. The trained model ships as plain JSON and is evaluated by a
-small pure-NumPy tree walker, so installing `leakcheck` pulls in nothing but
-NumPy and a result computed today is reproducible years from now, independent of
-any scikit-learn version.
+The screening model is a gradient-boosted classifier trained on 22,400 labelled
+results from 41 public datasets in which the same models were evaluated under
+both orderings, so the experimental condition is known by construction;
+leave-one-dataset-out validation gives an AUC of 0.795 and a Brier score of
+0.197. The output is a triage signal rather than a causal finding of leakage.
+The trained model ships as plain JSON and is evaluated by a pure-NumPy tree
+walker, limiting run-time dependencies and reducing sensitivity to changes in
+modelling-library serialization.
 
 # Statement of need
 
 Applying SMOTE [@chawla2002] or a related over-sampler to a whole dataset and
-only then splitting it is one of the most common forms of data leakage in
-applied machine learning [@kaufman2012; @kapoor2023; @vandewiele2021]. The
-resulting score describes the model's ability to recognise interpolated copies of
-its own training points rather than its ability to generalise.
+only then splitting it is a documented form of data leakage in applied machine
+learning [@kaufman2012; @kapoor2023; @vandewiele2021]. Because synthetic
+observations may then be constructed using information from cases assigned to
+the test partition, the resulting score can overestimate performance on
+genuinely unseen cases.
 
-Reviewers and editors are rarely in a position to run an author's code, and
-often cannot see it. The advice available to them is qualitative -- *watch out
-for leakage* -- and does not help with a specific number in a specific
-manuscript. `leakcheck` converts that advice into an answer about the case in
-hand: given what this paper reports, how unusual is this number?
+Reviewers and editors may lack the time, access, or computational environment
+needed to run an author's code. Existing guidance is often qualitative.
+`leakcheck` turns the general warning into a question about the case in hand:
+given what this paper reports, how unusual is this number relative to the
+controlled corpus?
 
-The empirical basis is that the artefact has a stable signature. Correctly
-evaluated scores track how hard a problem is; leaked scores do not, collapsing
-into a narrow band determined mostly by the classifier's capacity to memorise
-near-duplicates. A reported score that is high *for a problem that difficult* is
-therefore informative in a way that a high score alone is not.
+The empirical basis is a regularity observed in the companion study. Within
+that corpus, train-only scores varied more strongly with problem difficulty,
+whereas resample-then-split scores were more concentrated near the upper end of
+the observed range. The variance of the train-only scores was 4.86 times that
+of the leaked scores.
 
 `leakcheck` is intended for three uses:
 
 1. **Peer review.** Decide whether to ask the authors where the resampler sits
    in their pipeline. The tool prints a paragraph suitable for pasting into a
-   report, which states plainly that the output is a screen and not a finding.
+   report, which states that the output is a screen rather than a finding.
 2. **Self-audit.** Check one's own results before submission.
-3. **Meta-research.** Screen a corpus of published results to estimate how
-   widespread the pattern is in a field. `leakcheck --file results.csv` does this
-   in one call.
+3. **Meta-research.** Screen a table of extracted published results to
+   prioritise cases for methodological review; screening flags alone do not
+   estimate leakage prevalence.
 
 # A worked example
 
@@ -87,40 +98,49 @@ $ leakcheck --f1 0.92 --ir 5.2 --n-minority 237 --n-features 44 \
 
 # What the tool deliberately does not do
 
-`leakcheck` returns a probability that a number of that size, on a problem of
-that difficulty, came from the leaked ordering. It cannot observe a pipeline, so
-it cannot establish that one is wrong. Several innocent explanations produce the
-same signature: a macro-averaged rather than minority-class F1, a different
-preprocessing path, an unusually separable dataset. The package documentation and
-the `explain()` output both say so, and no verdict string asserts that an error
-occurred. Inputs outside the fitted ranges are answered with an explicit note
-that the result is an extrapolation, rather than silently.
+`leakcheck` is trained to recognise the empirical signature of resampling
+before splitting; it does not observe the pipeline that produced a reported
+score. Several non-leakage explanations can produce the same signature,
+including a macro-averaged F1 reported as a minority-class F1, unusual
+preprocessing, or a genuinely separable dataset. No verdict string asserts that
+an error occurred; the strongest package label is "likely leaked", and the
+accompanying explanation recommends asking where the resampler sits. Inputs
+outside the fitted ranges still return a probability, but the result carries an
+explicit note that the answer is an extrapolation.
 
 # State of the field
 
-Tooling for leakage detection is thin, and what exists operates on code or data
-rather than on reported results. `deepchecks` and similar validation libraries
-detect train/test contamination when they can see both partitions.
-Reproducibility checklists [@kapoor2023] ask authors to attest to correct
-practice but give a reader no way to check. Imbalance libraries such as
-`imbalanced-learn` [@lemaitre2017] provide pipeline objects that make the correct
-ordering easy, which prevents the error prospectively but says nothing about the
-existing literature. `leakcheck` occupies the remaining position: it works from
-the outside, on results that have already been published, using only what was
-published.
+Existing tooling for leakage generally operates on code or data. Validation
+libraries can detect some forms of train/test contamination when they can
+inspect both partitions. Reproducibility checklists [@kapoor2023] support
+better practice but do not by themselves evaluate a number already in print.
+Pipeline objects in imbalanced-learn [@lemaitre2017] facilitate the correct
+prospective ordering of resampling and splitting. `leakcheck` addresses a
+different use case: retrospective screening from published summary information.
 
 # Quality control
 
 The package has no dependency beyond NumPy at run time. The test suite covers
-input validation, model-family alias resolution, monotonicity of the probability
-in the reported score, agreement between batched and single-record evaluation,
-the command line interface, and a set of stored regression fixtures verified to
-reproduce the original scikit-learn predictions to within 1e-9. `leakcheck.selftest()`
-runs the fixture check on an installed copy.
+input validation, model-family alias resolution, selected checks of probability
+behaviour as the reported score changes, agreement between batched and
+single-record evaluation, the command line interface, and stored regression
+fixtures verified to reproduce the original scikit-learn predictions to within
+$10^{-9}$. `leakcheck.selftest()` runs the fixture check on an installed copy.
+The package is installable from source with a standard build backend and
+carries a machine-readable citation file.
 
 # Acknowledgements
 
-The screening model is trained on the 41-dataset corpus shipped in
-`data/processed/` of this repository.
+This research is funded by University of Finance – Marketing, HCMC Vietnam.
+This study is supported by Posts and Telecommunications Institute of Technology
+(PTIT), Vietnam. The screening model is trained on the 41-dataset corpus
+shipped in `data/processed/` of this repository.
+
+# Data availability
+
+The source code and associated materials are available from the
+[occbuu/leakcheck](https://github.com/occbuu/leakcheck) repository and are
+archived on Zenodo at DOI
+[10.5281/zenodo.22196497](https://doi.org/10.5281/zenodo.22196497).
 
 # References
