@@ -1,11 +1,83 @@
 cff-version: 1.2.0
-message: If you use this software, please cite it as below.
+message: If you use this software, please cite the article in preferred-citation.
+type: software
 title: leakcheck
 version: 1.0.0
 license: BSD-3-Clause
 date-released: "2026-08-31"
-authors:
-  - name: Author names withheld for review
+doi: 10.5281/zenodo.22196384
+url: "https://github.com/occbuu/leakage-premium"
+repository-code: "https://github.com/occbuu/leakage-premium"
 abstract: >-
   Screen a reported classification result for the signature of resampling
   applied before the train/test split.
+keywords:
+  - data leakage
+  - class imbalance
+  - SMOTE
+  - resampling
+  - reproducibility
+  - peer review
+authors:
+  - family-names: Le Ngoc
+    given-names: Hieu
+    orcid: "https://orcid.org/0000-0002-1133-1433"
+    email: lnhieu@ptit.edu.vn
+    affiliation: >-
+      Faculty of Information Technology 2, Posts and Telecommunications
+      Institute of Technology (PTIT), Ho Chi Minh City, Vietnam
+  - family-names: Truong Dinh Hai
+    given-names: Thuy
+    orcid: "https://orcid.org/0009-0006-2946-7490"
+    email: tdh.thuy@ufm.edu.vn
+    affiliation: >-
+      Faculty of Data Science, University of Finance – Marketing (UFM),
+      Ho Chi Minh City, Vietnam
+contact:
+  - family-names: Le Ngoc
+    given-names: Hieu
+    orcid: "https://orcid.org/0000-0002-1133-1433"
+    email: lnhieu@ptit.edu.vn
+    affiliation: >-
+      Faculty of Information Technology 2, Posts and Telecommunications
+      Institute of Technology (PTIT), 700000, Vietnam
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.22196384
+    description: Archived code and supporting materials on Zenodo
+preferred-citation:
+  type: article
+  title: >-
+    Leakage makes every problem look equally easy: A multi-dataset
+    measurement of the resampling-before-splitting artefact
+  year: 2026
+  authors:
+    - family-names: Le Ngoc
+      given-names: Hieu
+      orcid: "https://orcid.org/0000-0002-1133-1433"
+      email: lnhieu@ptit.edu.vn
+      affiliation: >-
+        Faculty of Information Technology 2, Posts and Telecommunications
+        Institute of Technology (PTIT), Ho Chi Minh City, Vietnam
+    - family-names: Truong Dinh Hai
+      given-names: Thuy
+      orcid: "https://orcid.org/0009-0006-2946-7490"
+      email: tdh.thuy@ufm.edu.vn
+      affiliation: >-
+        Faculty of Data Science, University of Finance – Marketing (UFM),
+        Ho Chi Minh City, Vietnam
+  url: "https://github.com/occbuu/leakage-premium"
+  identifiers:
+    - type: doi
+      value: 10.5281/zenodo.22196384
+      description: Archived code and supporting materials on Zenodo
+  notes: >-
+    All datasets used are public. The corpus builder, the experiment, the
+    analysis and the manuscript build script are released together, along
+    with the complete record of every model fit reported here and the
+    machine-readable summary. This research is funded by University of
+    Finance – Marketing, HCMC Vietnam, and is supported by Posts and
+    Telecommunications Institute of Technology (PTIT), Vietnam. The authors
+    declare that they have no known competing financial interests or
+    personal relationships that could have appeared to influence the work
+    reported in this paper.
