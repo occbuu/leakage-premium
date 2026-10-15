@@ -7,5 +7,4 @@ __pycache__/
 .venv/
 venv/
 *.docx
-*.pdf
 output/
